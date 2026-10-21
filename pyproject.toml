@@ -1,0 +1,36 @@
+[project]
+name = "zags-ui-tests"
+version = "0.1.0"
+description = "Training UI test framework for the ZAGS application"
+requires-python = ">=3.11"
+dependencies = [
+    "selenium>=4.26,<5",
+    "pytest>=8.3,<10",
+    "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.9,<1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["zags*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers -m 'not ui'"
+markers = [
+    "ui: requires browser, VPN and ZAGS credentials",
+    "smoke: basic non-destructive application checks",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["outputs", "work", ".tmp"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
