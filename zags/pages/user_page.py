@@ -9,7 +9,27 @@ class UserPage (BasePage):
     FIELDS = (By.CSS_SELECTOR, '[role="dialog"] input[required]')
     SURNAME = (
         By.XPATH,
-        '//*[@id="TextInputField-1"]',
+        '//*[@id="TextInputField-13"]',
+    )
+    FIRSTNAME = (
+         By.XPATH,
+        '//*[@id="TextInputField-14"]'
+    )
+    THIRDNAME = (
+         By.XPATH,
+        '//*[@id="TextInputField-15"]'
+    )
+    PHONE = (
+        By.XPATH,
+        '//*[@id="TextInputField-16"]'
+    )
+    PASSPORT = (
+        By.XPATH,
+        '//*[@id="TextInputField-17"]'
+    )
+    ADRESS = (
+        By.XPATH,
+        '//*[@id="TextInputField-18"]'
     )
     NEXT = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Далее"]')
     CLOSE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Закрыть"]')
@@ -26,7 +46,6 @@ class UserPage (BasePage):
 
     def set_surname(self, value):
         field = self.visible(self.SURNAME)
-        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -35,9 +54,78 @@ class UserPage (BasePage):
 
     def surname_value(self):
         return self.visible(self.SURNAME).get_property("value")
+        
 
+    def set_firstname(self,value):
+        field=self.visible(self.FIRSTNAME)
+        if value:
+            field.send_keys(value)
+        self.wait.until(
+            lambda driver: driver.find_element(*self.FIRSTNAME).get_property("value") == value
+                )
+
+
+    def firstname_value(self):
+        return self.visible(self.FIRSTNAME).get_property("value")
+
+
+
+    def set_thirdname(self,value):
+        field=self.visible(self.THIRDNAME)
+        if value:
+            field.send_keys(value)
+        self.wait.until(
+            lambda driver: driver.find_element(*self.THIRDNAME).get_property("value") == value
+                )
+    def thirdname_value(self):
+        return self.visible(self.THIRDNAME).get_property("value")
+
+
+    def set_phone(self,value):
+            field=self.visible(self.PHONE)
+            if value:
+                field.send_keys(value)
+            self.wait.until(
+                lambda driver: driver.find_element(*self.PHONE).get_property("value") == value
+                    )
+
+    def phone_value(self):
+            return self.visible(self.PHONE).get_property("value")
+
+
+
+    def set_passport(self,value):
+            field=self.visible(self.PASSPORT)
+            if value:
+                field.send_keys(value)
+            self.wait.until(
+                lambda driver: driver.find_element(*self.PASSPORT).get_property("value") == value
+                    )
+
+    def passport_value(self):
+                return self.visible(self.PASSPORT).get_property("value")
+
+
+    def set_adress(self,value):
+        field=self.visible(self.ADRESSS)
+        if value:
+           field.send_keys(value)
+        self.wait.until(
+            lambda driver: driver.find_element(*self.ADRESS).get_property("value") == value
+                )
+
+
+    def adress_value(self):
+                return self.visible(self.ADRESS).get_property("value")
+
+    
     def close(self):
         self.click(self.CLOSE)
+        self.wait.until(EC.invisibility_of_element_located(self.DIALOG))
+
+
+    def next(self):
+        self.click(self.NEXT)
         self.wait.until(EC.invisibility_of_element_located(self.DIALOG))
 
     def is_open(self):
