@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
+
 from zags.pages.base_page import BasePage
+
 
 class UserPage(BasePage):
 

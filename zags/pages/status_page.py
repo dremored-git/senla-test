@@ -1,6 +1,9 @@
 import re
+
 from selenium.webdriver.common.by import By
+
 from zags.pages.base_page import BasePage
+
 
 class StatusPage(BasePage):
     TITLE = (By.XPATH, '//*[contains(text(), "Статус заявки")]')

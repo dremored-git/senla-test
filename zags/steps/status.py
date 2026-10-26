@@ -1,5 +1,6 @@
 from zags.pages.status_page import StatusPage
 
+
 def check_application_number_not_empty(page: StatusPage) -> None:
     actual_number = page.get_application_number()
     assert actual_number != "", "Номер заявки пустой!"
@@ -7,4 +8,5 @@ def check_application_number_not_empty(page: StatusPage) -> None:
 
 def check_application_status(page: StatusPage, expected_status: str) -> None:
     actual_status = page.get_status()
-    assert actual_status == expected_status, f"Статус: ожидался {expected_status!r}, получен {actual_status!r}"
+    error_msg = f"Статус: ожидался {expected_status!r}, получен {actual_status!r}"
+    assert actual_status == expected_status, error_msg

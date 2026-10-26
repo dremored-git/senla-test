@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
+
 from zags.pages.base_page import BasePage
+
 
 class CitizenPage(BasePage):
     TITLE = (By.XPATH, '//*[contains(text(), "Данные гражданина")]') 

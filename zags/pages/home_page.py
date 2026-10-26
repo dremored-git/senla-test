@@ -4,6 +4,7 @@ from zags.pages.admin_page import AdminPage
 from zags.pages.base_page import BasePage
 from zags.pages.user_page import UserPage
 
+
 class HomePage(BasePage):
     ENTER_ADMIN = (By.XPATH, '//button[normalize-space(.)="Войти как администратор"]')
     ENTER_USER = (By.XPATH, '//button[normalize-space(.)="Войти как пользователь"]')

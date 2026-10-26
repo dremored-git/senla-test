@@ -1,7 +1,16 @@
 from zags.pages.data_page import DataPage
 
-def fill_service_data(page: DataPage, reg_date: str, spouse_surname: str, spouse_name: str, spouse_patronymic: str, spouse_birth_date: str, spouse_passport: str) -> None:
-    page.fill_reg_date(reg_date)
+
+def fill_service_data(
+    page: DataPage,
+    reg_date: str,
+    spouse_surname: str,
+    spouse_name: str,
+    spouse_patronymic: str,
+    spouse_birth_date: str,
+    spouse_passport: str,
+) -> None:
+    page.fill_reg_data(reg_date)
     page.fill_spouse_data(
         surname=spouse_surname,
         name=spouse_name,
