@@ -1,11 +1,11 @@
 import pytest
-from zags.steps.navigation import open_zags
-from zags.steps.user import open_user_form
-from zags.steps.citizen import fill_citizen_data
+
 from zags.pages.citizen_page import CitizenPage
 from zags.pages.data_page import DataPage
 from zags.pages.status_page import StatusPage
+from zags.steps.navigation import open_zags
 from zags.steps.status import check_application_number_not_empty, check_application_status
+from zags.steps.user import open_user_form
 
 pytestmark = [pytest.mark.ui]
 
