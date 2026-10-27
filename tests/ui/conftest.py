@@ -1,11 +1,10 @@
-import warnings
 from pathlib import Path
-from uuid import uuid4
 
 import pytest
 from dotenv import load_dotenv
 from selenium import webdriver
 
+from zags.reporting import attach_failure_screenshot
 from zags.settings import Settings
 
 REPORTS = pytest.StashKey[dict]()
@@ -39,11 +38,9 @@ def driver(request, settings):
     finally:
         reports = request.node.stash.get(REPORTS, {})
         failed = any(report.failed for report in reports.values())
-        if failed and request.config.getoption("--screenshot-on-failure"):
-            try:
-                directory = Path(request.config.rootpath) / "artifacts"
-                directory.mkdir(exist_ok=True)
-                browser_driver.save_screenshot(str(directory / f"failure-{uuid4().hex}.png"))
-            except Exception as error:
-                warnings.warn(f"Could not save screenshot ({type(error).__name__})", stacklevel=2)
+        save_locally = request.config.getoption("--screenshot-on-failure")
+        allure_enabled = request.config.getoption("allure_report_dir", default=None)
+        if failed and (allure_enabled or save_locally):
+            directory = Path(request.config.rootpath) / "artifacts" if save_locally else None
+            attach_failure_screenshot(browser_driver, directory)
         browser_driver.quit()

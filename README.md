@@ -59,6 +59,31 @@ pytest tests/ui -m ui --collect-only
 Готовые отчеты JUnit можно получить стандартным `--junitxml=artifacts/results.xml`,
 предварительно создав папку `artifacts`. Отчеты также не публиковать без проверки содержимого.
 
+## Allure
+
+Подключен `allure-pytest`: понятные названия и группировка smoke-тестов,
+переиспользуемые шаги и автоматический PNG при падении UI-теста с отчетом.
+
+```powershell
+pip install -e ".[dev]"
+pytest tests/ui -m ui -v --alluredir=allure-results --clean-alluredir
+```
+
+Для просмотра нужен отдельный Allure CLI. Установить Node.js LTS, затем:
+
+```powershell
+npm install -g allure
+allure --version
+allure generate allure-results
+allure open allure-report
+```
+
+Это команды Allure Report 3. Уже установленный Allure 2 можно использовать
+с теми же результатами: `allure generate allure-results --clean -o allure-report`,
+затем `allure open allure-report`; для него нужна Java.
+
+[Пошаговая инструкция и пример](docs/allure.md) · [Домашнее задание](docs/homework_allure.md).
+
 ## Структура
 
 ```text
@@ -129,7 +154,7 @@ def test_change_surname(driver, settings):
 изменения существующих тестов. Проверочные шаги дополнительно проверяются локально
 на правильных и неправильных состояниях в `tests/unit/test_check_steps.py`.
 
-Пока нет Allure, базы данных, API-клиента и тестов регистрации с изменением данных:
+Пока нет базы данных, API-клиента и тестов регистрации с изменением данных:
 добавляем их по мере прохождения программы, а не как пустые заготовки.
 
 Однотипные входные данные передавать через `pytest.mark.parametrize` с понятными `id`.
@@ -159,7 +184,8 @@ git push -u origin main
 
 Команду с `<...>` не запускать буквально: заменить адрес своим.
 Если это уже клонированный репозиторий, не переинициализировать его и не менять remote вслепую.
-GitHub Actions запускает только локальные проверки конфигурации и Ruff.
+GitHub Actions запускает локальные unit-тесты и Ruff, сохраняет сырые результаты Allure
+в артефакте `allure-results`. Для просмотра скачать артефакт и сгенерировать HTML локально.
 Доступ к VPN и стенду на публичном runner не предполагается; UI автоматически не запускаются.
 
 Зависимости заданы совместимыми диапазонами в `pyproject.toml`. После согласованного
