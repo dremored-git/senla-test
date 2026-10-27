@@ -3,7 +3,9 @@
 Учебный проект для Романа и Даниила: Python, Selenium, Pytest и Page Object.
 Smoke-тесты открывают форму администратора, проверяют пустые поля и ввод/очистку фамилии
 на латинице и кириллице. Сценарии собираются из импортируемых шагов с параметрами.
-Заявления не отправляются, записи на стенде не создаются и не удаляются.
+Smoke-тесты администратора не создают и не удаляют записи на стенде.
+В `tests/ui/test_user.py` добавлен сценарий регистрации брака: он отправляет заявку.
+Для безопасного знакомства с отчетом запускать только `tests/ui/test_admin.py`.
 
 ## Быстрый старт на Windows
 
@@ -66,7 +68,7 @@ pytest tests/ui -m ui --collect-only
 
 ```powershell
 pip install -e ".[dev]"
-pytest tests/ui -m ui -v --alluredir=allure-results --clean-alluredir
+pytest tests/ui/test_admin.py -m ui -v --alluredir=allure-results --clean-alluredir
 ```
 
 Для просмотра нужен отдельный Allure CLI. Установить Node.js LTS, затем:
@@ -74,7 +76,7 @@ pytest tests/ui -m ui -v --alluredir=allure-results --clean-alluredir
 ```powershell
 npm install -g allure
 allure --version
-allure generate allure-results
+allure generate allure-results --clean
 allure open allure-report
 ```
 

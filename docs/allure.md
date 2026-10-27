@@ -44,11 +44,11 @@ allure --version
 # Без стенда: проверить установку и сформировать первый набор результатов.
 pytest tests/unit --alluredir=allure-results --clean-alluredir
 
-# UI: включить VPN и заполнить локальный .env.
-pytest tests/ui -m ui -v --alluredir=allure-results --clean-alluredir
+# UI без создания заявок: включить VPN и заполнить локальный .env.
+pytest tests/ui/test_admin.py -m ui -v --alluredir=allure-results --clean-alluredir
 
 # Команды Allure 3: сформировать и открыть HTML.
-allure generate allure-results
+allure generate allure-results --clean
 allure open allure-report
 ```
 
