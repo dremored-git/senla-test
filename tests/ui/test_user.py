@@ -1,36 +1,52 @@
 import pytest
 
+from zags.pages.citizen_page import CitizenPage
+from zags.pages.data_page import DataPage
+from zags.pages.status_page import StatusPage
 from zags.steps.navigation import open_zags
-from zags.steps.user import (
-    check_next_button_enabled,
-    check_required_fields_empty,
-    check_user_form_closed,
-    check_user_surname,
-    close_user_form,
-    fill_user_surname,
-    open_user_form,
-)
+from zags.steps.status import check_application_number_not_empty, check_application_status
+from zags.steps.user import open_user_form
 
-pytestmark = [pytest.mark.ui, pytest.mark.smoke]
+pytestmark = [pytest.mark.ui]
 
-
-def test_empty_user_form_disables_next(driver, settings):
+def test_open_user_form_and_fill_surname(driver, settings):
+    
     home = open_zags(driver, settings)
-    user = open_user_form(home)
-    check_required_fields_empty(user, expected_count=6)
-    check_next_button_enabled(user, expected=False)
-    close_user_form(user)
-    check_user_form_closed(user)
+    user_page = open_user_form(home)   
+    user_page.fill_surname("Иванов")
+    user_page.fill_name("Иван")
+    user_page.fill_lastname("Иванович")
+    user_page.fill_telephon("37512312312")
+    user_page.fill_pasport("КВ123123")
+    user_page.fill_address("г. Москва, ул. Ленина, д. 1")
 
+    user_page.click_next()
+    user_page.click_brak() 
 
-@pytest.mark.parametrize("surname", ["Training", "Иванов"], ids=["latin", "cyrillic"])
-def test_surname_can_be_entered_and_cleared(driver, settings, surname):
-    home = open_zags(driver, settings)
-    user = open_user_form(home)
-    fill_user_surname(user, value=surname)
-    check_user_surname(user, expected=surname)
-    fill_user_surname(user, value="")
-    check_user_surname(user, expected="")
-    check_next_button_enabled(user, expected=False)
-    close_user_form(user)
-    check_user_form_closed(user)
+    citizen = CitizenPage(driver, settings.timeout)
+    citizen.wait_until_open()
+    citizen.fill_surname("Иванов")
+    citizen.fill_name("Иван")
+    citizen.fill_lastname("Иванович")
+    citizen.fill_data("01-01-1990")
+    citizen.fill_pasport("КВ123123")
+    citizen.fill_gender("Муж")
+    citizen.fill_address("г. Москва, ул. Ленина, д. 1")
+    citizen.click_next()
+
+    data = DataPage(driver, settings.timeout)
+    data.wait_until_open()
+    data.fill_reg_data("10-10-2010")
+    data.fill_new_surname("Акимов")
+    data.fill_surname_sup("Пыткова")
+    data.fill_name_sup("Анастасия")
+    data.fill_lastname_sup("Сергеевна")
+    data.fill_birth_date("01-12-2011")
+    data.fill_pasport("ВУ123123")
+
+    data.click_finish()
+
+    status_page = StatusPage(driver, settings.timeout)
+    status_page.wait_until_open()
+    check_application_number_not_empty(status_page)
+    check_application_status(status_page, expected_status="На рассмотрении.")
