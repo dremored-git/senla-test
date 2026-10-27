@@ -1,15 +1,15 @@
 import pytest
 
+from zags.steps.navigation import open_zags
 from zags.steps.user import (
-    check_user_form_closed,
-    check_user_surname,
     check_next_button_enabled,
     check_required_fields_empty,
+    check_user_form_closed,
+    check_user_surname,
     close_user_form,
     fill_user_surname,
     open_user_form,
 )
-from zags.steps.navigation import open_zags
 
 pytestmark = [pytest.mark.ui, pytest.mark.smoke]
 

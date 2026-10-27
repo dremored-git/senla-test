@@ -1,18 +1,20 @@
 import pytest
-from zags.steps.navigation import open_zags
-from zags.steps.user import open_user_form
-from zags.pages.Citizen_data import CitizenData
+
 from zags.pages.appdata import AppData
+from zags.pages.application_choice import Application_choice
+from zags.pages.Citizen_data import CitizenData
 from zags.pages.statusapp import AppStatuspage
 from zags.steps.checkstatus import check_application_number_not_empty, check_application_status
-from zags.pages.application_choice import Application_choice
+from zags.steps.navigation import open_zags
+from zags.steps.user import open_user_form
 
 pytestmark = [pytest.mark.ui]
 
+
 def test_open_user_form_and_fill_surname(driver, settings):
-    
+
     home = open_zags(driver, settings)
-    user_page = open_user_form(home)   
+    user_page = open_user_form(home)
     user_page.set_surname("Иванов")
     user_page.set_firstname("Иван")
     user_page.set_thirdname("Ivanovich")
@@ -23,7 +25,6 @@ def test_open_user_form_and_fill_surname(driver, settings):
     user_page.next()
     app_choice = Application_choice(driver)  # или Application_choice(driver, settings.timeout)
     app_choice.birthapp_choice()
-
 
     citizen = CitizenData(driver, settings.timeout)
     citizen.wait_until_open()
@@ -43,7 +44,6 @@ def test_open_user_form_and_fill_surname(driver, settings):
     data.set_father("Иванов")
     data.set_grandmother("Бабуля")
     data.set_grandfather("Дедуля")
-   
 
     data.finish()
 

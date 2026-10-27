@@ -1,6 +1,7 @@
 from zags.pages.appdata import AppData
 from zags.pages.Citizen_data import CitizenData
 
+
 def open_app_data_form(home_page: CitizenData) -> AppData:
     return home_page.next()
 
@@ -38,7 +39,7 @@ def check_finish_button_enabled(page: AppData, expected: bool) -> None:
     assert actual == expected, f"Next button enabled: expected {expected}, got {actual}"
 
 
-def next_to_applicationstatus (page: AppData) -> None:
+def next_to_applicationstatus(page: AppData) -> None:
     page.finish()
 
 

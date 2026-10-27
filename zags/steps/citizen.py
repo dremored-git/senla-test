@@ -1,5 +1,6 @@
-from zags.pages.Citizen_data import CitizenData
 from zags.pages.application_choice import Application_choice
+from zags.pages.Citizen_data import CitizenData
+
 
 def open_app_citizen_form(home_page: Application_choice) -> CitizenData:
     return home_page.birtapp_choice()
@@ -25,7 +26,7 @@ def fill_citizen_passport(page: CitizenData, value: str) -> None:
     page.set_passport(value)
 
 
-def fill_citizen_gender (page: CitizenData, value: str) ->None:
+def fill_citizen_gender(page: CitizenData, value: str) -> None:
     page.set_gender(value)
 
 
@@ -46,7 +47,7 @@ def check_next_button_enabled(page: CitizenData, expected: bool) -> None:
     assert actual == expected, f"Next button enabled: expected {expected}, got {actual}"
 
 
-def next_to_applicationdata (page: CitizenData) -> None:
+def next_to_applicationdata(page: CitizenData) -> None:
     page.next()
 
 

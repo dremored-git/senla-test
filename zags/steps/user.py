@@ -1,6 +1,7 @@
-from zags.pages.user_page import UserPage
-from zags.pages.home_page import HomePage
 from zags.pages.application_choice import Application_choice
+from zags.pages.home_page import HomePage
+from zags.pages.user_page import UserPage
+
 
 def open_user_form(home_page: HomePage) -> UserPage:
     return home_page.open_user()
@@ -35,12 +36,13 @@ def check_user_surname(page: UserPage, expected: str) -> None:
     assert actual == expected, f"Surname: expected {expected!r}, got {actual!r}"
 
 
-def check_required_fields_empty(page: UserPage, expected_count:int) -> None:
-    actual=page.required_values()
+def check_required_fields_empty(page: UserPage, expected_count: int) -> None:
+    actual = page.required_values()
     assert len(actual) == expected_count, (
         f"Required fields: expected {expected_count}, got {len(actual)}"
-        )
+    )
     assert all(value == "" for value in actual), "Some required fields are not empty"
+
 
 def check_required_fields_are_not_empty(page: UserPage, expected_count: int) -> None:
     actual = page.required_values()
@@ -55,11 +57,11 @@ def check_next_button_enabled(page: UserPage, expected: bool) -> None:
     assert actual == expected, f"Next button enabled: expected {expected}, got {actual}"
 
 
-def next_to_application (page: UserPage) -> None:
+def next_to_application(page: UserPage) -> None:
     page.next()
 
 
-def birtapp_choice (page: Application_choice) -> None:
+def birtapp_choice(page: Application_choice) -> None:
     page.birtapp_choice()
 
 

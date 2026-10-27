@@ -3,10 +3,10 @@ from types import SimpleNamespace
 import pytest
 
 from zags.steps.user import (
-    check_user_form_closed,
-    check_user_surname,
     check_next_button_enabled,
     check_required_fields_empty,
+    check_user_form_closed,
+    check_user_surname,
 )
 
 
