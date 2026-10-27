@@ -13,6 +13,7 @@ class HomePage(BasePage):
         # This training stand uses HTTP Basic Auth before its application UI.
         self.driver.get(settings.authenticated_url())
         self.visible(self.ENTER_ADMIN)
+        self.visible(self.ENTER_USER)
         return self
 
     def open_u(self, settings):

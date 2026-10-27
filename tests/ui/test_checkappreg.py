@@ -1,4 +1,5 @@
 import pytest
+import allure
 
 from zags.pages.appdata import AppData
 from zags.pages.application_choice import Application_choice
@@ -10,19 +11,22 @@ from zags.steps.user import open_user_form
 
 pytestmark = [pytest.mark.ui]
 
-
+@allure.epic("ЗАГС")
+@allure.feature("Пользователь")
+@allure.story("Заявка на регистрацию услуги 'Регистрация рождения'")
+@allure.title("Все этапы регистрации заявки: от данных пользователя до статуса заявки")
 def test_open_user_form_and_fill_surname(driver, settings):
 
     home = open_zags(driver, settings)
     user_page = open_user_form(home)
-    user_page.set_surname("Иванов")
-    user_page.set_firstname("Иван")
-    user_page.set_thirdname("Ivanovich")
-    user_page.set_phone("37512312312")
-    user_page.set_passport("КВ123123")
-    user_page.set_adress("г. Москва, ул. Ленина, д. 1")
+    user_page.fill_surname("Иванов")
+    user_page.fill_name("Иван")
+    user_page.fill_lastname("Иванович")
+    user_page.fill_telephon("37512312312")
+    user_page.fill_pasport("КВ123123111")
+    user_page.fill_address("г. Москва, ул. Ленина, д. 1")
 
-    user_page.next()
+    user_page.click_next()
     app_choice = Application_choice(driver)  # или Application_choice(driver, settings.timeout)
     app_choice.birthapp_choice()
 
@@ -30,7 +34,7 @@ def test_open_user_form_and_fill_surname(driver, settings):
     citizen.wait_until_open()
     citizen.set_lastname("Иванов")
     citizen.set_firstname("Иван")
-    citizen.set_surname("Ivanovich")
+    citizen.set_surname("Иванович")
     citizen.set_birthdate("01.01.1990")
     citizen.set_passport("КВ123123")
     citizen.set_gender("Муж")

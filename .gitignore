@@ -17,3 +17,6 @@ artifacts/
 .idea/
 .vscode/*
 !.vscode/settings.json
+
+allure-results/
+allure-report/

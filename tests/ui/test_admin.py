@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from zags.steps.admin import (
@@ -14,6 +15,10 @@ from zags.steps.navigation import open_zags
 pytestmark = [pytest.mark.ui, pytest.mark.smoke]
 
 
+@allure.epic("ЗАГС")
+@allure.feature("Администратор")
+@allure.story("Обязательные поля")
+@allure.title("Пустая форма администратора: кнопка Далее недоступна")
 def test_empty_admin_form_disables_next(driver, settings):
     home = open_zags(driver, settings)
     admin = open_admin_form(home)
@@ -23,6 +28,10 @@ def test_empty_admin_form_disables_next(driver, settings):
     check_admin_form_closed(admin)
 
 
+@allure.epic("ЗАГС")
+@allure.feature("Администратор")
+@allure.story("Ввод и очистка фамилии")
+@allure.title("Ввод и очистка фамилии: {param_id}")
 @pytest.mark.parametrize("surname", ["Training", "Иванов"], ids=["latin", "cyrillic"])
 def test_surname_can_be_entered_and_cleared(driver, settings, surname):
     home = open_zags(driver, settings)
