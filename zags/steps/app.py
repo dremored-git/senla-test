@@ -1,6 +1,6 @@
+import allure
 from zags.pages.appdata import AppData
 from zags.pages.Citizen_data import CitizenData
-
 
 @allure.step("Открыть форму услуги")
 def open_app_data_form(home_page: CitizenData) -> AppData:
