@@ -1,4 +1,5 @@
 import allure
+
 from zags.pages.home_page import HomePage
 from zags.pages.user_page import UserPage
 

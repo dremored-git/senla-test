@@ -1,5 +1,5 @@
-import pytest
 import allure
+import pytest
 
 from zags.pages.appdata import AppData
 from zags.pages.application_choice import Application_choice
