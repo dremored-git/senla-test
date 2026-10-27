@@ -18,16 +18,16 @@ def fill_user_thirdname(page: UserPage, value: str) -> None:
     page.set_thirdname(value)
 
 
-def fill_user_phone(page: UserPage, value: int) -> None:
+def fill_user_phone(page: UserPage, value: str) -> None:
     page.set_phone(value)
 
 
-def fill_user_passport(page: UserPage, value: int) -> None:
+def fill_user_passport(page: UserPage, value: str) -> None:
     page.set_passport(value)
 
 
 def fill_user_adress(page: UserPage, value: str) -> None:
-    page.set_passport(value)
+    page.set_adress(value)
 
 
 def check_user_surname(page: UserPage, expected: str) -> None:
@@ -35,12 +35,19 @@ def check_user_surname(page: UserPage, expected: str) -> None:
     assert actual == expected, f"Surname: expected {expected!r}, got {actual!r}"
 
 
-def check_required_fields_empty(page: UserPage, expected_count: int) -> None:
+def check_required_fields_empty(page: UserPage, expected_count:int) -> None:
+    actual=page.required_values()
+    assert len(actual) == expected_count, (
+        f"Required fields: expected {expected_count}, got {len(actual)}"
+        )
+    assert all(value == "" for value in actual), "Some required fields are not empty"
+
+def check_required_fields_are_not_empty(page: UserPage, expected_count: int) -> None:
     actual = page.required_values()
     assert len(actual) == expected_count, (
         f"Required fields: expected {expected_count}, got {len(actual)}"
     )
-    assert all(value == "" for value in actual), "Some required fields are not empty"
+    assert all(value != "" for value in actual), "Some required fields are empty"
 
 
 def check_next_button_enabled(page: UserPage, expected: bool) -> None:
@@ -49,11 +56,11 @@ def check_next_button_enabled(page: UserPage, expected: bool) -> None:
 
 
 def next_to_application (page: UserPage) -> None:
-    page.next
+    page.next()
 
 
 def birtapp_choice (page: Application_choice) -> None:
-    page.birtapp_choice
+    page.birtapp_choice()
 
 
 def close_user_form(page: UserPage) -> None:

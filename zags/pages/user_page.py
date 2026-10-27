@@ -7,29 +7,30 @@ from zags.pages.base_page import BasePage
 class UserPage (BasePage):
     DIALOG = (By.CSS_SELECTOR, '[role="dialog"]')
     FIELDS = (By.CSS_SELECTOR, '[role="dialog"] input[required]')
+    APPCHOICE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Регистрация брака"]')
     SURNAME = (
         By.XPATH,
-        '//*[@id="TextInputField-13"]',
+        '//input[@placeholder="Введите фамилию (минимум 2 символа)"]',
     )
     FIRSTNAME = (
          By.XPATH,
-        '//*[@id="TextInputField-14"]'
+        '//input[@placeholder="Введите имя (минимум 2 символа)"]'
     )
     THIRDNAME = (
          By.XPATH,
-        '//*[@id="TextInputField-15"]'
+        '//input[@placeholder="Введите отчество (минимум 5 символов)"]'
     )
     PHONE = (
         By.XPATH,
-        '//*[@id="TextInputField-16"]'
+        '//input[@placeholder="Введите номер телефона (не более 11 символов)"]'
     )
     PASSPORT = (
         By.XPATH,
-        '//*[@id="TextInputField-17"]'
+        '//input[@placeholder="Введите номер паспорта (не более 8 символов)"]'
     )
     ADRESS = (
         By.XPATH,
-        '//*[@id="TextInputField-18"]'
+        '//input[@placeholder="Введите адрес прописки"]'
     )
     NEXT = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Далее"]')
     CLOSE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Закрыть"]')
@@ -46,6 +47,7 @@ class UserPage (BasePage):
 
     def set_surname(self, value):
         field = self.visible(self.SURNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -58,6 +60,7 @@ class UserPage (BasePage):
 
     def set_firstname(self,value):
         field=self.visible(self.FIRSTNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -72,6 +75,7 @@ class UserPage (BasePage):
 
     def set_thirdname(self,value):
         field=self.visible(self.THIRDNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -83,6 +87,7 @@ class UserPage (BasePage):
 
     def set_phone(self,value):
             field=self.visible(self.PHONE)
+            field.clear()
             if value:
                 field.send_keys(value)
             self.wait.until(
@@ -96,6 +101,7 @@ class UserPage (BasePage):
 
     def set_passport(self,value):
             field=self.visible(self.PASSPORT)
+            field.clear()
             if value:
                 field.send_keys(value)
             self.wait.until(
@@ -107,7 +113,8 @@ class UserPage (BasePage):
 
 
     def set_adress(self,value):
-        field=self.visible(self.ADRESSS)
+        field=self.visible(self.ADRESS)
+        field.clear()
         if value:
            field.send_keys(value)
         self.wait.until(
@@ -126,7 +133,7 @@ class UserPage (BasePage):
 
     def next(self):
         self.click(self.NEXT)
-        self.wait.until(EC.invisibility_of_element_located(self.DIALOG))
+        self.wait.until(EC.visibility_of_element_located(self.APPCHOICE))
 
     def is_open(self):
         return any(element.is_displayed() for element in self.driver.find_elements(*self.DIALOG))

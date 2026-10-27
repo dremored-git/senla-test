@@ -6,7 +6,8 @@ from zags.pages.base_page import BasePage
 
 class Application_choice(BasePage):
     DIALOG = (By.CSS_SELECTOR, '[role="dialog"]')
-    BUTTON = NEXT = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Регистрация рождения"]')
+    BUTTON = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Регистрация рождения"]')
+    CHOSENAPP = (By.XPATH, '//*[contains(text(), "услугу")]')
     
     
     def wait_until_open(self):
@@ -16,7 +17,7 @@ class Application_choice(BasePage):
     def button_is_enabled(self):
             return self.visible(self.BUTTON).is_enabled()   
 
-    def birtapp_choice(self):
+    def birthapp_choice(self):
             self.click(self.BUTTON)
-            self.wait.until(EC.invisibility_of_element_located(self.DIALOG))
+            self.wait.until(EC.visibility_of_element_located(self.CHOSENAPP))
     

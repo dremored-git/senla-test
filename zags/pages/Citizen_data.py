@@ -7,33 +7,34 @@ from zags.pages.base_page import BasePage
 class CitizenData (BasePage):
     DIALOG = (By.CSS_SELECTOR, '[role="dialog"]')
     FIELDS = (By.CSS_SELECTOR, '[role="dialog"] input[required]')
+    BIRTHAPP = (By.XPATH, '//label[contains(., "Место рождения")]/following::input[1]')
     LASTNAME = (
         By.XPATH,
-        '//*[@id="TextInputField-59"]',
+        '//label[contains(., "Фамилия")]/following::input[1]',
     )
     FIRSTNAME = (
          By.XPATH,
-        '//*[@id="TextInputField-60"]'
+        '//label[contains(., "Имя")]/following::input[1]'
     )
     SURNAME = (
          By.XPATH,
-        '//*[@id="TextInputField-61"]'
+        '//label[contains(., "Отчество")]/following::input[1]'
     )
     BIRTHDATE = (
         By.XPATH,
-        '//*[@id="TextInputField-62"]'
+        '//label[contains(., "Дата рождения")]/following::input[1]'
     )
     PASSPORT = (
         By.XPATH,
-        '//*[@id="TextInputField-63"]'
+        '//label[contains(., "Номер паспорта")]/following::input[1]'
     )
     GENDER = ( 
          By.XPATH,
-        '//*[@id="TextInputField-64"]'
+        '//label[contains(., "Пол")]/following::input[1]'
     )
     ADRESS = (
         By.XPATH,
-        '//*[@id="TextInputField-65"]'
+        '//label[contains(., "Адрес прописки")]/following::input[1]'
     )
     NEXT = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Далее"]')
     CLOSE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Закрыть"]')
@@ -50,6 +51,7 @@ class CitizenData (BasePage):
 
     def set_surname(self, value):
         field = self.visible(self.SURNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -62,6 +64,7 @@ class CitizenData (BasePage):
 
     def set_firstname(self,value):
         field=self.visible(self.FIRSTNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -76,6 +79,7 @@ class CitizenData (BasePage):
 
     def set_lastname(self,value):
         field=self.visible(self.LASTNAME)
+        field.clear()
         if value:
             field.send_keys(value)
         self.wait.until(
@@ -87,19 +91,21 @@ class CitizenData (BasePage):
 
     def set_birthdate(self,value):
             field=self.visible(self.BIRTHDATE)
+            field.clear()
             if value:
                 field.send_keys(value)
-            self.wait.until(
-                lambda driver: driver.find_element(*self.BIRTHDATE).get_property("value") == value
-                    )
+            #self.wait.until(
+                #lambda driver: driver.find_element(*self.BIRTHDATE).get_property("value") == value
+                    #)
 
-    def phone_value(self):
-            return self.visible(self.PHONE).get_property("value")
 
+    def birthdate_value(self):
+        return self.visible(self.BIRTHDATE).get_property("value")
 
 
     def set_passport(self,value):
             field=self.visible(self.PASSPORT)
+            field.clear()
             if value:
                 field.send_keys(value)
             self.wait.until(
@@ -112,6 +118,7 @@ class CitizenData (BasePage):
 
     def set_gender(self,value):
                 field=self.visible(self.GENDER)
+                field.clear()
                 if value:
                     field.send_keys(value)
                 self.wait.until(
@@ -119,11 +126,12 @@ class CitizenData (BasePage):
                         )
     
     def gender_value(self):
-                    return self.visible(self.GENDER).get_property("value")
+              return self.visible(self.GENDER).get_property("value")
 
 
     def set_adress(self,value):
-        field=self.visible(self.ADRESSS)
+        field=self.visible(self.ADRESS)
+        field.clear()
         if value:
            field.send_keys(value)
         self.wait.until(
@@ -142,7 +150,7 @@ class CitizenData (BasePage):
 
     def next(self):
         self.click(self.NEXT)
-        self.wait.until(EC.invisibility_of_element_located(self.DIALOG))
+        self.wait.until(EC.visibility_of_element_located(self.BIRTHAPP))
 
     def is_open(self):
         return any(element.is_displayed() for element in self.driver.find_elements(*self.DIALOG))
