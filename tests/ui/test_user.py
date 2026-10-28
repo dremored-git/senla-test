@@ -54,4 +54,8 @@ def test_open_user_form_and_fill_surname(driver, settings):
     status_page = StatusPage(driver, settings.timeout)
     status_page.wait_until_open()
     check_application_number_not_empty(status_page)
+<<<<<<< HEAD
     check_application_status(status_page, expected_status="На рассмотрении.")
+=======
+    check_application_status(status_page, expected_status="На рассмотрении.")
+>>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94

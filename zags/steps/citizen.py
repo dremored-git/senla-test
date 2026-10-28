@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from zags.pages.application_choice import Application_choice
 from zags.pages.Citizen_data import CitizenData
 
@@ -59,6 +60,8 @@ def close_citizen_form(page: CitizenData) -> None:
 def check_citizen_form_closed(page: CitizenData) -> None:
     assert not page.is_open(), "Citizen dialog is still open"
 =======
+=======
+>>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
 from zags.pages.citizen_page import CitizenPage
 
 
@@ -68,4 +71,7 @@ def fill_citizen_data(page: CitizenPage, birth_date: str, address: str) -> None:
 
 def click_next_on_citizen(page: CitizenPage) -> None:
     page.click_next()
+<<<<<<< HEAD
 >>>>>>> origin/main
+=======
+>>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94

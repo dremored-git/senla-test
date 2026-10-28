@@ -85,4 +85,9 @@ class UserPage(BasePage):
         self.click(self.BRAK_BUTTON)
         
     def close(self):
+<<<<<<< HEAD
         self.click(self.CLOSE_BUTTON)
+=======
+        self.click(self.CLOSE_BUTTON)
+    
+>>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
