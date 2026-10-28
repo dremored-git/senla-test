@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import allure
 
-=======
->>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
 from zags.pages.home_page import HomePage
 from zags.pages.user_page import UserPage
 
@@ -10,7 +7,6 @@ from zags.pages.user_page import UserPage
 @allure.step("Открыть форму пользователя")
 def open_user_form(home_page: HomePage) -> UserPage:
     return home_page.open_user()
-<<<<<<< HEAD
 
 
 @allure.step("Ввести фамилию: {value}")
@@ -47,5 +43,3 @@ def close_user_form(page: UserPage) -> None:
 @allure.step("Проверить, что форма пользователя закрыта")
 def check_user_form_closed(page: UserPage) -> None:
     assert not page.is_open(), "Admin dialog is still open"
-=======
->>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
