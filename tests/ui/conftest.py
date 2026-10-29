@@ -1,11 +1,9 @@
 from pathlib import Path
 
 import pytest
-from dotenv import load_dotenv
 from selenium import webdriver
 
 from zags.reporting import attach_failure_screenshot
-from zags.settings import Settings
 
 REPORTS = pytest.StashKey[dict]()
 
@@ -14,12 +12,6 @@ REPORTS = pytest.StashKey[dict]()
 def pytest_runtest_makereport(item, call):
     report = (yield).get_result()
     item.stash.setdefault(REPORTS, {})[report.when] = report
-
-
-@pytest.fixture
-def settings():
-    load_dotenv(Path(__file__).resolve().parents[2] / ".env", override=False)
-    return Settings.from_env()
 
 
 @pytest.fixture
