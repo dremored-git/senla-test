@@ -1,5 +1,7 @@
-from zags.pages.status_page import StatusPage
 import allure
+
+from zags.pages.status_page import StatusPage
+
 
 @allure.step ("Проверить, что номер заявки не пустой")
 def check_application_number_not_empty(page: StatusPage) -> None:

@@ -1,5 +1,6 @@
-from zags.pages.data_page import DataPage
 import allure
+
+from zags.pages.data_page import DataPage
 
 
 @allure.step("Заполнить данные услуги (дата регистрации и данные супруга)")

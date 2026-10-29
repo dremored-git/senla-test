@@ -1,5 +1,7 @@
-from zags.pages.citizen_page import CitizenPage
 import allure
+
+from zags.pages.citizen_page import CitizenPage
+
 
 @allure.step("Заполнить данные гражданина")
 def fill_citizen_data(page: CitizenPage, birth_date: str, address: str) -> None:

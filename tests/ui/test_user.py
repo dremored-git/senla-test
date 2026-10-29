@@ -1,5 +1,5 @@
-import pytest
 import allure
+import pytest
 
 from zags.pages.citizen_page import CitizenPage
 from zags.pages.data_page import DataPage
