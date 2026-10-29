@@ -1,6 +1,8 @@
 from zags.pages.data_page import DataPage
+import allure
 
 
+@allure.step("Заполнить данные услуги (дата регистрации и данные супруга)")
 def fill_service_data(
     page: DataPage,
     reg_date: str,
@@ -19,5 +21,6 @@ def fill_service_data(
         passport=spouse_passport
     )
 
+@allure.step("Нажать кнопку 'Завершить'")
 def click_finish(page: DataPage) -> None:
     page.click_finish()
