@@ -1,6 +1,6 @@
 """Importable API actions and assertions used by tests and fixtures."""
-import pytest
 import allure
+import pytest
 from requests import Response
 
 from zags.api.client import ZagsApi

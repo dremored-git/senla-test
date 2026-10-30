@@ -4,16 +4,16 @@ import allure
 import pytest
 
 from zags.steps.api import (
+    check_app_id_is_correct,
+    check_application_kindofstatus,
     check_application_status_body,
     check_applications_body,
     check_status_code,
-    check_app_id_is_correct,
     get_application_status,
     get_applications,
-    read_json_object,
     get_applications_length_limit,
-    check_application_kindofstatus
-    )
+    read_json_object,
+)
 
 pytestmark = [pytest.mark.api, pytest.mark.smoke]
 

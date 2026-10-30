@@ -3,11 +3,11 @@ from requests.auth import HTTPBasicAuth
 
 from zags.api.client import NoAuth, ZagsApi
 from zags.steps.api import (
+    check_app_id_is_correct,
     check_applications_body,
     check_status_code,
     get_applications,
     read_json_object,
-    check_app_id_is_correct
 )
 
 
