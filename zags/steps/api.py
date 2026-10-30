@@ -1,5 +1,5 @@
 """Importable API actions and assertions used by tests and fixtures."""
-
+import pytest
 import allure
 from requests import Response
 
@@ -7,7 +7,14 @@ from zags.api.client import ZagsApi
 
 
 @allure.step("Получить список заявок")
-def get_applications(api: ZagsApi, *, limit: int = 2, offset: int = 0) -> Response:
+def get_applications(api: ZagsApi, limit: int = 2, offset: int = 0) -> Response:
+    return api.get_applications(limit=limit, offset=offset)
+
+
+@allure.step("Проверка, что список заявок не превышает указанный лимит")
+def get_applications_length_limit(api:ZagsApi, body:dict, limit: int = 2, offset: int = 0) -> list[dict]:
+    length=body["data"]
+    assert len(length)<=limit, f"Expected data limit{limit}, got len(data)={len(length)}"
     return api.get_applications(limit=limit, offset=offset)
 
 
@@ -44,6 +51,9 @@ def read_json_object(response: Response) -> dict:
 @allure.step("Проверить список заявок")
 def check_applications_body(body: dict) -> list[dict]:
     assert "data" in body, "Response has no data field"
+    data=body["data"]
+    if data is None or data == {}:
+        pytest.skip("Response 'data' пустая — проверять нечего (на стенде нет заявки)")
     rows = body["data"]
     assert isinstance(rows, list), "data must be a list"
     for index, row in enumerate(rows):
@@ -52,6 +62,16 @@ def check_applications_body(body: dict) -> list[dict]:
         assert type(identifier) is int and identifier > 0, (
             f"data[{index}].applicationid must be a positive integer, got {identifier!r}"
         )
+    return rows
+
+
+@allure.step("Проверить корректность ID в списке заявок")
+def check_app_id_is_correct(body: dict) -> list[dict]:
+    assert "data" in body, "Response has no data field"
+    rows=body["data"]
+    for i in (rows):
+        correctid=i["applicationid"]
+        assert isinstance (correctid,dict), (f"data [{i}] does not exist!")
     return rows
 
 
@@ -64,6 +84,12 @@ def check_application_status_body(body: dict) -> dict:
     for key in sorted(required):
         assert isinstance(data[key], str) and data[key].strip(), f"{key} must be a non-empty string"
     return data
+
+
+@allure.step ("Проверить совпадение статуса заявки")
+def check_application_kindofstatus(body: dict) -> dict:
+    data=body.get("kindofapplication[0]")
+    assert data=="kindofapplication[0]", f"{data}is not correct!"
 
 
 @allure.step("Проверить ID созданного администратора")

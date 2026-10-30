@@ -1,4 +1,3 @@
-import allure
 import pytest
 
 from zags.pages.citizen_page import CitizenPage
@@ -9,10 +8,6 @@ from zags.steps.status import check_application_number_not_empty, check_applicat
 from zags.steps.user import open_user_form
 
 pytestmark = [pytest.mark.ui]
-@allure.epic("ЗАГС")
-@allure.feature("Пользователь")
-@allure.story("Ввод и очистка фамилии")
-@allure.title("Ввод и очистка фамилии: {param_id}")
 
 def test_open_user_form_and_fill_surname(driver, settings):
     
@@ -20,7 +15,7 @@ def test_open_user_form_and_fill_surname(driver, settings):
     user_page = open_user_form(home)   
     user_page.fill_surname("Иванов")
     user_page.fill_name("Иван")
-    user_page.fill_lastname("Ivanovich")
+    user_page.fill_lastname("Иванович")
     user_page.fill_telephon("37512312312")
     user_page.fill_pasport("КВ123123")
     user_page.fill_address("г. Москва, ул. Ленина, д. 1")
@@ -32,7 +27,7 @@ def test_open_user_form_and_fill_surname(driver, settings):
     citizen.wait_until_open()
     citizen.fill_surname("Иванов")
     citizen.fill_name("Иван")
-    citizen.fill_lastname("Ivanovich")
+    citizen.fill_lastname("Иванович")
     citizen.fill_data("01-01-1990")
     citizen.fill_pasport("КВ123123")
     citizen.fill_gender("Муж")
@@ -54,8 +49,4 @@ def test_open_user_form_and_fill_surname(driver, settings):
     status_page = StatusPage(driver, settings.timeout)
     status_page.wait_until_open()
     check_application_number_not_empty(status_page)
-<<<<<<< HEAD
     check_application_status(status_page, expected_status="На рассмотрении.")
-=======
-    check_application_status(status_page, expected_status="На рассмотрении.")
->>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
