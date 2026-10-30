@@ -2,12 +2,12 @@ import allure
 import pytest
 
 from zags.steps.api import (
+    check_application_status_body,
+    check_applications_body,
+    check_status_code,
     get_application_status,
     get_applications,
-    check_status_code,
     read_json_object,
-    check_applications_body,
-    check_application_status_body,
 )
 
 pytestmark = [pytest.mark.api]
@@ -18,7 +18,7 @@ pytestmark = [pytest.mark.api]
 @pytest.mark.parametrize("limit", [1, 3], ids=["limit_1", "limit_3"])
 
 def test_pagination(api_client, limit):
-    response = get_applications(api_client, limit=limit, offset=0)  # <-- добавили response =
+    response = get_applications(api_client, limit=limit, offset=0) 
     check_status_code(response, expected=200)
     body = read_json_object(response)
     rows = check_applications_body(body)
