@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from zags.pages.citizen_page import CitizenPage
@@ -8,6 +9,9 @@ from zags.steps.status import check_application_number_not_empty, check_applicat
 from zags.steps.user import open_user_form
 
 pytestmark = [pytest.mark.ui]
+@allure.feature("Регистрация заявки")
+@allure.story("Успешная регистрация брака")
+@allure.title("Проверка сквозной регистрации заявки")
 
 def test_open_user_form_and_fill_surname(driver, settings):
     

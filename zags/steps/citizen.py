@@ -1,11 +1,12 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+import allure
+
 from zags.pages.application_choice import Application_choice
 from zags.pages.Citizen_data import CitizenData
+from zags.pages.citizen_page import CitizenPage
 
 
 def open_app_citizen_form(home_page: Application_choice) -> CitizenData:
-    return home_page.birtapp_choice()
+    return home_page.birthapp_choice()
 
 
 def fill_citizen_surname(page: CitizenData, value: str) -> None:
@@ -59,19 +60,14 @@ def close_citizen_form(page: CitizenData) -> None:
 
 def check_citizen_form_closed(page: CitizenData) -> None:
     assert not page.is_open(), "Citizen dialog is still open"
-=======
-=======
->>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
-from zags.pages.citizen_page import CitizenPage
 
 
+@allure.step("Заполнить данные гражданина")
 def fill_citizen_data(page: CitizenPage, birth_date: str, address: str) -> None:
-    page.fill_birth_date(birth_date)
+    page.fill_data(birth_date)
     page.fill_address(address)
 
+
+@allure.step("Перейти на следующий шаг")
 def click_next_on_citizen(page: CitizenPage) -> None:
     page.click_next()
-<<<<<<< HEAD
->>>>>>> origin/main
-=======
->>>>>>> e5c9cdf2f14234865ebc36a27cd9eeca26a17e94
