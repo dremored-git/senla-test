@@ -16,6 +16,10 @@ class HomePage(BasePage):
         self.visible(self.ENTER_USER)
         return self
 
+    def open_u(self, settings):
+        self.driver.get(settings.authenticated_url())
+        self.visible(self.ENTER_USER)
+
     def open_admin(self):
         self.click(self.ENTER_ADMIN)
         page = AdminPage(self.driver, self.timeout)
