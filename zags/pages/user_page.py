@@ -25,11 +25,18 @@ class UserPage(BasePage):
         field.clear()
         field.send_keys(value)
 
+
+    def surname_value(self):
+            return self.visible(self.SURNAME).get_property("value")
+
     def fill_name(self, value: str):
         field = self.visible(self.NAME)
         field.click()
         field.clear()
         field.send_keys(value)
+
+    def name_value(self):
+           return self.visible(self.NAME).get_property("value")
 
     def fill_lastname(self, value: str):
         field = self.visible(self.LASTNAME)
@@ -37,11 +44,19 @@ class UserPage(BasePage):
         field.clear()
         field.send_keys(value)
 
+
+    def lastname_value(self):
+            return self.visible(self.LASTNAME).get_property("value")
+
     def fill_telephon(self, value: str):
         field = self.visible(self.TELEPHON)
         field.click()
         field.clear()
         field.send_keys(value)
+
+
+    def telephon_value(self):
+            return self.visible(self.TELEPHON).get_property("value")
 
     def fill_pasport(self, value: str):
         field = self.visible(self.PASPORT)
@@ -49,11 +64,19 @@ class UserPage(BasePage):
         field.clear()
         field.send_keys(value)
 
+
+    def pasport_value(self):
+            return self.visible(self.PASPORT).get_property("value")
+
     def fill_address(self, value: str):
         field = self.visible(self.ADDRESS)
         field.click()
         field.clear()
         field.send_keys(value)
+
+
+    def address_value(self):
+            return self.visible(self.ADDRESS).get_property("value")
 
     def click_next(self):
         self.click(self.NEXT_BUTTON)
@@ -63,4 +86,3 @@ class UserPage(BasePage):
         
     def close(self):
         self.click(self.CLOSE_BUTTON)
-    
