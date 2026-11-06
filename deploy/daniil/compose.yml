@@ -1,0 +1,26 @@
+services:
+  selenoid:
+    image: aerokube/selenoid:1.11.3
+    ports: ["127.0.0.1:4445:4444"]
+    environment:
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./browsers.json:/etc/selenoid/browsers.json:ro
+    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "3", "-container-network", "zags-daniil"]
+    networks: [browsers]
+  selenoid-ui:
+    image: aerokube/selenoid-ui:1.10.11
+    ports: ["127.0.0.1:8081:8080"]
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+    depends_on: [selenoid]
+    networks: [browsers]
+  tests:
+    profiles: ["tests"]
+    build:
+      context: ../..
+      dockerfile: deploy/daniil/Dockerfile
+    networks: [browsers]
+networks:
+  browsers:
+    name: zags-daniil
