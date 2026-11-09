@@ -1,0 +1,85 @@
+name: Defense daniil
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 18 * * 1-5'
+permissions:
+  contents: read
+concurrency:
+  group: defense-daniil-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install -e ".[dev,defense]"
+      - run: ruff check .
+      - name: Unit tests
+        run: pytest tests/unit tests/final_support --junitxml=artifacts/daniil/junit.xml --alluredir=artifacts/daniil/results --clean-alluredir
+      - name: Generate HTML report
+        if: always() && hashFiles('artifacts/daniil/results/*') != ''
+        run: |
+          npx --yes --package=allure@3.22.1 allure generate artifacts/daniil/results --clean
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daniil-unit-report
+          path: |
+            artifacts/daniil/
+            allure-report/
+          retention-days: 7
+      - name: Mail JUnit and run link
+        if: always() && vars.DEFENSE_MAIL_ENABLED == 'true' && hashFiles('artifacts/daniil/junit.xml') != ''
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python -m zags.defense.mail_report artifacts/daniil/junit.xml --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+  live:
+    if: vars.DEFENSE_LIVE_ENABLED == 'true'
+    runs-on: [self-hosted, linux, zags-vpn]
+    timeout-minutes: 20
+    env:
+      ZAGS_BASE_URL: https://regoffice.senla.eu/
+      ZAGS_USERNAME: ${{ secrets.ZAGS_USERNAME }}
+      ZAGS_PASSWORD: ${{ secrets.ZAGS_PASSWORD }}
+      ZAGS_DB_HOST: ${{ secrets.ZAGS_DB_HOST }}
+      ZAGS_DB_PORT: ${{ secrets.ZAGS_DB_PORT }}
+      ZAGS_DB_NAME: ${{ secrets.ZAGS_DB_NAME }}
+      ZAGS_DB_USER: ${{ secrets.ZAGS_DB_USER }}
+      ZAGS_DB_PASSWORD: ${{ secrets.ZAGS_DB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install -e ".[dev,defense]"
+      - run: playwright install chromium --with-deps
+      - name: Read-only live checks
+        run: pytest tests/final/daniil -m "defense_live and not defense_write and not defense_remote" --junitxml=artifacts/daniil/live.xml --alluredir=artifacts/daniil/live-results --clean-alluredir
+      - name: Generate live HTML report
+        if: always() && hashFiles('artifacts/daniil/live-results/*') != ''
+        run: |
+          npx --yes --package=allure@3.22.1 allure generate artifacts/daniil/live-results --clean
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daniil-live-report
+          path: |
+            artifacts/daniil/
+            allure-report/
+          retention-days: 7

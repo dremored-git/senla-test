@@ -12,7 +12,9 @@ def get_applications(api: ZagsApi, limit: int = 2, offset: int = 0) -> Response:
 
 
 @allure.step("Проверка, что список заявок не превышает указанный лимит")
-def get_applications_length_limit(api:ZagsApi, body:dict, limit: int = 2, offset: int = 0) -> list[dict]:
+def get_applications_length_limit(
+    api:ZagsApi, body:dict, limit: int = 2, offset: int = 0
+    ) -> list[dict]:
     length=body["data"]
     assert len(length)<=limit, f"Expected data limit{limit}, got len(data)={len(length)}"
     return api.get_applications(limit=limit, offset=offset)
