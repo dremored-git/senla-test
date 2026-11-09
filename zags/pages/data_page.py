@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from zags.pages.base_page import BasePage
+from zags.pages.status_page import StatusPage
 
 
 class DataPage(BasePage):
@@ -18,10 +19,7 @@ class DataPage(BasePage):
         self.visible(self.TITLE)
 
     def fill_reg_data(self, value: str):
-        field = self.visible(self.REG_DATA)
-        field.click()
-        field.clear()
-        field.send_keys(value)
+        self.fill_date(self.REG_DATA, value)
 
     def fill_new_surname(self, value: str):
         field = self.visible(self.NEW_SURNAME)
@@ -48,10 +46,7 @@ class DataPage(BasePage):
         field.send_keys(value)
 
     def fill_birth_date(self, value: str):
-        field = self.visible(self.BIRTH_DATE)
-        field.click()
-        field.clear()
-        field.send_keys(value)
+        self.fill_date(self.BIRTH_DATE, value)
 
     def fill_pasport(self, value: str):
         field = self.visible(self.PASPORT)
@@ -61,3 +56,6 @@ class DataPage(BasePage):
 
     def click_finish(self):
         self.click(self.FINISH_BUTTON)
+        page = StatusPage(self.driver, self.timeout)
+        page.wait_until_open()
+        return page

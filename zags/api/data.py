@@ -9,7 +9,7 @@ def make_admin_payload(**overrides) -> dict:
         "personalFirstName": "Учебный",
         "personalLastName": "API" + uuid4().hex[:8],
         "personalMiddleName": "Тестович",
-        "personalNumberOfPassport": "TEST" + uuid4().hex[:8],
+        "personalNumberOfPassport": "T" + uuid4().hex[:7],
         "personalPhoneNumber": "00000000000",
     }
     return payload | overrides

@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+from zags.pages.appdata import AppData
 from zags.pages.base_page import BasePage
 
 
@@ -22,7 +23,7 @@ class CitizenData(BasePage):
     CLOSE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Закрыть"]')
 
     def wait_until_open(self):
-        self.visible(self.DIALOG)
+        self.visible(self.BIRTHDATE)
 
     def required_values(self):
         self.wait.until(EC.presence_of_all_elements_located(self.FIELDS))
@@ -68,13 +69,7 @@ class CitizenData(BasePage):
         return self.visible(self.LASTNAME).get_property("value")
 
     def set_birthdate(self, value):
-        field = self.visible(self.BIRTHDATE)
-        field.clear()
-        if value:
-            field.send_keys(value)
-        # self.wait.until(
-        # lambda driver: driver.find_element(*self.BIRTHDATE).get_property("value") == value
-        # )
+        self.fill_date(self.BIRTHDATE, value)
 
     def birthdate_value(self):
         return self.visible(self.BIRTHDATE).get_property("value")
@@ -121,7 +116,9 @@ class CitizenData(BasePage):
 
     def next(self):
         self.click(self.NEXT)
-        self.wait.until(EC.visibility_of_element_located(self.BIRTHAPP))
+        page = AppData(self.driver, self.timeout)
+        page.wait_until_open()
+        return page
 
     def is_open(self):
         return any(element.is_displayed() for element in self.driver.find_elements(*self.DIALOG))

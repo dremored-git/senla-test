@@ -1,57 +1,60 @@
+from uuid import uuid4
+
 import allure
 import pytest
 
-from zags.pages.appdata import AppData
-from zags.pages.application_choice import Application_choice
-from zags.pages.Citizen_data import CitizenData
-from zags.pages.statusapp import AppStatuspage
+from zags.steps.app import (
+    fill_app_birthblase,
+    fill_app_father,
+    fill_app_grandfather,
+    fill_app_grandmother,
+    fill_app_mother,
+    next_to_applicationstatus,
+    open_app_data_form,
+)
 from zags.steps.checkstatus import check_application_number_not_empty, check_application_status
+from zags.steps.citizen import (
+    fill_citizen_birthdate,
+    fill_citizen_family_name,
+    fill_citizen_firstname,
+    fill_citizen_gender,
+    fill_citizen_passport,
+    fill_citizen_patronymic,
+    fill_user_adress,
+    open_app_citizen_form,
+)
 from zags.steps.navigation import open_zags
-from zags.steps.user import open_user_form
+from zags.steps.user import fill_user_data, open_service_choice, open_user_form
 
-pytestmark = [pytest.mark.ui]
+pytestmark = [pytest.mark.ui, pytest.mark.defense_write]
+
 
 @allure.epic("ЗАГС")
 @allure.feature("Пользователь")
 @allure.story("Заявка на регистрацию услуги 'Регистрация рождения'")
 @allure.title("Все этапы регистрации заявки: от данных пользователя до статуса заявки")
 def test_open_user_form_and_fill_surname(driver, settings):
-
     home = open_zags(driver, settings)
-    user_page = open_user_form(home)
-    user_page.fill_surname("Иванов")
-    user_page.fill_name("Иван")
-    user_page.fill_lastname("Иванович")
-    user_page.fill_telephon("37512312312")
-    user_page.fill_pasport("КВ123123111")
-    user_page.fill_address("г. Москва, ул. Ленина, д. 1")
-
-    user_page.click_next()
-    app_choice = Application_choice(driver)  # или Application_choice(driver, settings.timeout)
-    app_choice.birthapp_choice()
-
-    citizen = CitizenData(driver, settings.timeout)
-    citizen.wait_until_open()
-    citizen.set_lastname("Иванов")
-    citizen.set_firstname("Иван")
-    citizen.set_surname("Иванович")
-    citizen.set_birthdate("01.01.1990")
-    citizen.set_passport("КВ123123")
-    citizen.set_gender("Муж")
-    citizen.set_adress("г. Москва, ул. Ленина, д. 1")
-    citizen.next()
-
-    data = AppData(driver, settings.timeout)
-    data.wait_until_open()
-    data.set_birthplace("Grodno")
-    data.set_mother("Иванова")
-    data.set_father("Иванов")
-    data.set_grandmother("Бабуля")
-    data.set_grandfather("Дедуля")
-
-    data.finish()
-
-    status_page = AppStatuspage(driver, settings.timeout)
-    status_page.wait_until_open()
-    check_application_number_not_empty(status_page)
-    check_application_status(status_page, expected_status="На рассмотрении.")
+    user = open_user_form(home)
+    fill_user_data(
+        user, family_name="Учебный", name="Тест", patronymic="Тестович",
+        phone="00000000000", passport="T" + uuid4().hex[:7], address="Учебный адрес 1",
+    )
+    choice = open_service_choice(user)
+    citizen = open_app_citizen_form(choice)
+    fill_citizen_family_name(citizen, "Учебный")
+    fill_citizen_firstname(citizen, "Тест")
+    fill_citizen_patronymic(citizen, "Тестович")
+    fill_citizen_birthdate(citizen, "2026-01-01")
+    fill_citizen_passport(citizen, "T" + uuid4().hex[:7])
+    fill_citizen_gender(citizen, "муж")
+    fill_user_adress(citizen, "Учебный адрес 1")
+    data = open_app_data_form(citizen)
+    fill_app_birthblase(data, "Учебный город")
+    fill_app_mother(data, "Тестовая мать")
+    fill_app_father(data, "Тестовый отец")
+    fill_app_grandmother(data, "Тестовая бабушка")
+    fill_app_grandfather(data, "Тестовый дедушка")
+    status = next_to_applicationstatus(data)
+    check_application_number_not_empty(status)
+    check_application_status(status, expected_status="На рассмотрении.")

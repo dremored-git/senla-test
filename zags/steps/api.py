@@ -1,6 +1,5 @@
 """Importable API actions and assertions used by tests and fixtures."""
 import allure
-import pytest
 from requests import Response
 
 from zags.api.client import ZagsApi
@@ -13,11 +12,11 @@ def get_applications(api: ZagsApi, limit: int = 2, offset: int = 0) -> Response:
 
 @allure.step("Проверка, что список заявок не превышает указанный лимит")
 def get_applications_length_limit(
-    api:ZagsApi, body:dict, limit: int = 2, offset: int = 0
-    ) -> list[dict]:
-    length=body["data"]
-    assert len(length)<=limit, f"Expected data limit{limit}, got len(data)={len(length)}"
-    return api.get_applications(limit=limit, offset=offset)
+    api: ZagsApi, body: dict, limit: int = 2, offset: int = 0
+) -> list[dict]:
+    rows = check_applications_body(body)
+    assert len(rows) <= limit, f"Expected at most {limit} rows, got {len(rows)}"
+    return rows
 
 
 @allure.step("Получить статус заявки {application_id}")
@@ -53,9 +52,6 @@ def read_json_object(response: Response) -> dict:
 @allure.step("Проверить список заявок")
 def check_applications_body(body: dict) -> list[dict]:
     assert "data" in body, "Response has no data field"
-    data=body["data"]
-    if data is None or data == {}:
-        pytest.skip("Response 'data' пустая — проверять нечего (на стенде нет заявки)")
     rows = body["data"]
     assert isinstance(rows, list), "data must be a list"
     for index, row in enumerate(rows):
@@ -69,12 +65,7 @@ def check_applications_body(body: dict) -> list[dict]:
 
 @allure.step("Проверить корректность ID в списке заявок")
 def check_app_id_is_correct(body: dict) -> list[dict]:
-    assert "data" in body, "Response has no data field"
-    rows=body["data"]
-    for i in (rows):
-        correctid=i["applicationid"]
-        assert isinstance (correctid,dict), (f"data [{i}] does not exist!")
-    return rows
+    return check_applications_body(body)
 
 
 @allure.step("Проверить поля статуса заявки")
@@ -89,15 +80,18 @@ def check_application_status_body(body: dict) -> dict:
 
 
 @allure.step ("Проверить совпадение статуса заявки")
-def check_application_kindofstatus(body: dict) -> dict:
-    data=body.get("kindofapplication[0]")
-    assert data=="kindofapplication[0]", f"{data}is not correct!"
+def check_application_kindofstatus(body: dict, expected: str) -> None:
+    data = check_application_status_body(body)
+    actual = data["kindofapplication"]
+    assert actual == expected, f"Expected application kind {expected!r}, got {actual!r}"
 
 
 @allure.step("Проверить ID созданного администратора")
 def check_created_admin(body: dict) -> int:
-    identifier = body.get("staffid")
+    data = body.get("data")
+    assert isinstance(data, dict), "Expected response.data object"
+    identifier = data.get("staffid")
     assert type(identifier) is int and identifier > 0, (
-        f"Expected positive staffid according to Swagger, got {identifier!r}"
+        f"Expected positive data.staffid, got {identifier!r}"
     )
     return identifier

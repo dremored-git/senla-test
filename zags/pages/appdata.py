@@ -2,13 +2,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from zags.pages.base_page import BasePage
+from zags.pages.statusapp import AppStatuspage
 
 
 class AppData(BasePage):
     DIALOG = (By.CSS_SELECTOR, '[role="dialog"]')
     FIELDS = (By.CSS_SELECTOR, '[role="dialog"] input[required]')
     APPSTATUS = (By.XPATH, '//button[contains(text(), "Обновить")]')
-    BIRTHPLACE = (By.CSS_SELECTOR, ('input[type="text"][required][id^="TextInputField-"]'))
+    BIRTHPLACE = (
+        By.XPATH,
+        '//*[@role="dialog"]//label[contains(., "Место рождения")]/following::input[1]',
+    )
     MOTHER = (By.XPATH, '//input[@id=//label[starts-with(text(), "Ма")]/@for]')
     FATHER = (By.XPATH, '//input[@id=//label[starts-with(text(), "От")]/@for]')
     GRANDMOTHER = (By.XPATH, '//input[@id=//label[starts-with(text(), "Ба")]/@for]')
@@ -18,7 +22,7 @@ class AppData(BasePage):
     CLOSE = (By.XPATH, '//*[@role="dialog"]//button[normalize-space(.)="Закрыть"]')
 
     def wait_until_open(self):
-        self.visible(self.DIALOG)
+        self.visible(self.BIRTHPLACE)
 
     def required_values(self):
         self.wait.until(EC.presence_of_all_elements_located(self.FIELDS))
@@ -89,7 +93,9 @@ class AppData(BasePage):
 
     def finish(self):
         self.click(self.FINISH)
-        self.wait.until(EC.visibility_of_element_located(self.APPSTATUS))
+        page = AppStatuspage(self.driver, self.timeout)
+        page.wait_until_open()
+        return page
 
     def is_open(self):
         return any(element.is_displayed() for element in self.driver.find_elements(*self.DIALOG))

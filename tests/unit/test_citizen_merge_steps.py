@@ -1,6 +1,8 @@
 from unittest.mock import call, create_autospec
 
 import pytest
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 
 from zags.pages.application_choice import Application_choice
 from zags.pages.Citizen_data import CitizenData
@@ -28,10 +30,19 @@ def test_roman_steps_keep_existing_page_interface(step, method, args):
     getattr(page, method).assert_called_once_with(*args)
 
 
-def test_open_citizen_form_keeps_service_choice_result():
-    choice = create_autospec(Application_choice, instance=True, spec_set=True)
-    assert citizen.open_app_citizen_form(choice) is choice.birthapp_choice.return_value
-    choice.birthapp_choice.assert_called_once_with()
+def test_open_citizen_form_returns_ready_citizen_page():
+    driver = create_autospec(WebDriver, instance=True)
+    element = create_autospec(WebElement, instance=True)
+    element.is_displayed.return_value = True
+    element.is_enabled.return_value = True
+    driver.find_element.return_value = element
+    choice = Application_choice(driver, timeout=7)
+    result = citizen.open_app_citizen_form(choice)
+    assert isinstance(result, CitizenData)
+    assert result.driver is driver
+    assert result.timeout == 7
+    element.click.assert_called_once_with()
+    assert driver.find_element.call_args == call(*CitizenData.BIRTHDATE)
 
 
 def test_daniil_fill_uses_actual_page_methods_in_order():

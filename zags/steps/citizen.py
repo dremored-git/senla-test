@@ -1,8 +1,10 @@
 import allure
 
+from zags.pages.appdata import AppData
 from zags.pages.application_choice import Application_choice
 from zags.pages.Citizen_data import CitizenData
 from zags.pages.citizen_page import CitizenPage
+from zags.pages.data_page import DataPage
 
 
 def open_app_citizen_form(home_page: Application_choice) -> CitizenData:
@@ -50,8 +52,8 @@ def check_next_button_enabled(page: CitizenData, expected: bool) -> None:
     assert actual == expected, f"Next button enabled: expected {expected}, got {actual}"
 
 
-def next_to_applicationdata(page: CitizenData) -> None:
-    page.next()
+def next_to_applicationdata(page: CitizenData) -> AppData:
+    return page.next()
 
 
 def close_citizen_form(page: CitizenData) -> None:
@@ -69,5 +71,29 @@ def fill_citizen_data(page: CitizenPage, birth_date: str, address: str) -> None:
 
 
 @allure.step("Перейти на следующий шаг")
-def click_next_on_citizen(page: CitizenPage) -> None:
-    page.click_next()
+def click_next_on_citizen(page: CitizenPage) -> DataPage:
+    return page.click_next()
+
+
+@allure.step("Заполнить фамилию гражданина")
+def fill_citizen_family_name(page: CitizenData, value: str) -> None:
+    page.set_lastname(value)
+
+
+@allure.step("Заполнить отчество гражданина")
+def fill_citizen_patronymic(page: CitizenData, value: str) -> None:
+    page.set_surname(value)
+
+
+@allure.step("Заполнить данные гражданина для регистрации брака")
+def fill_wedding_citizen_data(
+    page: CitizenPage, family_name: str, name: str, patronymic: str,
+    birth_date: str, passport: str, gender: str, address: str,
+) -> None:
+    page.fill_surname(family_name)
+    page.fill_name(name)
+    page.fill_lastname(patronymic)
+    page.fill_data(birth_date)
+    page.fill_pasport(passport)
+    page.fill_gender(gender)
+    page.fill_address(address)

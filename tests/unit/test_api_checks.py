@@ -20,7 +20,7 @@ from zags.steps.api import (
         pytest.param(check_applications_body, {"data": [{"applicationid": True}]}, id="boolean-id"),
         pytest.param(check_application_status_body, {"data": []}, id="status-is-list"),
         pytest.param(check_application_status_body, {"data": {}}, id="status-fields-missing"),
-        pytest.param(check_created_admin, {"staffid": None}, id="null-staff-id"),
+        pytest.param(check_created_admin, {"data": {"staffid": None}}, id="null-staff-id"),
     ],
 )
 def test_api_check_rejects_invalid_body(check, body):

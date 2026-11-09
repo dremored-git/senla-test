@@ -2,6 +2,7 @@ import allure
 
 from zags.pages.appdata import AppData
 from zags.pages.Citizen_data import CitizenData
+from zags.pages.statusapp import AppStatuspage
 
 
 @allure.step("Открыть форму услуги")
@@ -42,8 +43,8 @@ def check_finish_button_enabled(page: AppData, expected: bool) -> None:
     assert actual == expected, f"Next button enabled: expected {expected}, got {actual}"
 
 @allure.step("Перейти на страницу статуса заявки")
-def next_to_applicationstatus(page: AppData) -> None:
-    page.finish()
+def next_to_applicationstatus(page: AppData) -> AppStatuspage:
+    return page.finish()
 
 @allure.step("Проверить, что форма 'Данные гражданина' закрыта")
 def check_citizen_form_closed(page: AppData) -> None:

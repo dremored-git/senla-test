@@ -20,6 +20,14 @@ services:
     build:
       context: ../..
       dockerfile: deploy/daniil/Dockerfile
+    environment:
+      ZAGS_BASE_URL: ${ZAGS_BASE_URL:-https://regoffice.senla.eu/}
+      ZAGS_USERNAME: ${ZAGS_USERNAME:-}
+      ZAGS_PASSWORD: ${ZAGS_PASSWORD:-}
+      ZAGS_REMOTE_URL: http://selenoid:4444/wd/hub
+      ZAGS_REMOTE_VERSION: ${ZAGS_REMOTE_VERSION:-128.0}
+    volumes:
+      - ../../artifacts:/app/artifacts
     networks: [browsers]
 networks:
   browsers:

@@ -1,5 +1,7 @@
 import allure
 
+from zags.pages.application_choice import Application_choice
+from zags.pages.citizen_page import CitizenPage
 from zags.pages.home_page import HomePage
 from zags.pages.user_page import UserPage
 
@@ -42,4 +44,27 @@ def close_user_form(page: UserPage) -> None:
 
 @allure.step("Проверить, что форма пользователя закрыта")
 def check_user_form_closed(page: UserPage) -> None:
-    assert not page.is_open(), "Admin dialog is still open"
+    assert not page.is_open(), "User dialog is still open"
+
+
+@allure.step("Заполнить данные заявителя")
+def fill_user_data(
+    page: UserPage, family_name: str, name: str, patronymic: str,
+    phone: str, passport: str, address: str,
+) -> None:
+    page.fill_surname(family_name)
+    page.fill_name(name)
+    page.fill_lastname(patronymic)
+    page.fill_telephon(phone)
+    page.fill_pasport(passport)
+    page.fill_address(address)
+
+
+@allure.step("Открыть выбор услуги")
+def open_service_choice(page: UserPage) -> Application_choice:
+    return page.click_next()
+
+
+@allure.step("Выбрать регистрацию брака")
+def open_wedding_citizen_form(page: Application_choice) -> CitizenPage:
+    return page.wedding_choice()

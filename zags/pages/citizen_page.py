@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from zags.pages.base_page import BasePage
+from zags.pages.data_page import DataPage
 
 
 class CitizenPage(BasePage):
@@ -36,10 +37,7 @@ class CitizenPage(BasePage):
         field.send_keys(value)
 
     def fill_data(self, value: str):
-        field = self.visible(self.DATA)
-        field.click()
-        field.clear()
-        field.send_keys(value)
+        self.fill_date(self.DATA, value)
 
     def fill_pasport(self, value: str):
         field = self.visible(self.PASPORT)
@@ -62,3 +60,6 @@ class CitizenPage(BasePage):
   
     def click_next(self):
         self.click(self.NEXT_BUTTON)
+        page = DataPage(self.driver, self.timeout)
+        page.wait_until_open()
+        return page

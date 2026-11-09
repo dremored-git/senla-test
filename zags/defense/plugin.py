@@ -100,7 +100,7 @@ def defense_page(settings, request):
 
 
 @pytest.fixture
-def defense_remote_driver():
+def defense_remote_driver(settings):
     from selenium import webdriver
 
     endpoint = os.environ.get("ZAGS_REMOTE_URL")

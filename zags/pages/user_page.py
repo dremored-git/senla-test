@@ -1,11 +1,15 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
+from zags.pages.application_choice import Application_choice
 from zags.pages.base_page import BasePage
+from zags.pages.citizen_page import CitizenPage
 
 
 class UserPage(BasePage):
 
     TITLE = (By.CSS_SELECTOR, 'div[role="dialog"]')
+    FIELDS = (By.CSS_SELECTOR, '[role="dialog"] input[required]')
     SURNAME = (By.XPATH, '//input[contains(@placeholder, "Введите фамилию")]')
     NAME = (By.XPATH, '//input[contains(@placeholder, "Введите имя")]')
     LASTNAME = (By.XPATH, '//input[contains(@placeholder, "Введите отчество")]')
@@ -80,9 +84,26 @@ class UserPage(BasePage):
 
     def click_next(self):
         self.click(self.NEXT_BUTTON)
+        page = Application_choice(self.driver, self.timeout)
+        page.wait_until_open()
+        return page
 
     def click_brak(self):
         self.click(self.BRAK_BUTTON)
-        
+        page = CitizenPage(self.driver, self.timeout)
+        page.wait_until_open()
+        return page
+
     def close(self):
         self.click(self.CLOSE_BUTTON)
+        self.wait.until(EC.invisibility_of_element_located(self.TITLE))
+
+    def required_values(self):
+        fields = self.wait.until(EC.presence_of_all_elements_located(self.FIELDS))
+        return [field.get_property("value") for field in fields]
+
+    def next_is_enabled(self):
+        return self.visible(self.NEXT_BUTTON).is_enabled()
+
+    def is_open(self):
+        return any(field.is_displayed() for field in self.driver.find_elements(*self.TITLE))

@@ -13,8 +13,8 @@ pytestmark = [pytest.mark.api, pytest.mark.api_write]
 @allure.severity(allure.severity_level.NORMAL)
 @allure.description(
     "Необязательный POST-пример. Создает синтетического администратора только "
-    "с флагом --allow-api-writes. HTTP 200 и staffid ожидаются по Swagger; "
-    "живой POST при подготовке примера не запускался."
+    "с флагом --allow-api-writes. Проверяем HTTP 200 и положительный data.staffid "
+    "в фактической обертке ответа стенда."
 )
 @allure.epic("ЗАГС")
 @allure.feature("API администратора")

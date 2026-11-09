@@ -13,9 +13,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install -e ".[dev,defense]"
       - run: python -m ruff check .
-      - run: python -m pytest tests/unit --alluredir=allure-results --clean-alluredir
+      - run: python -m pytest tests/unit tests/final_support --alluredir=allure-results --clean-alluredir
       - name: Save Allure results
         if: always()
         uses: actions/upload-artifact@v4

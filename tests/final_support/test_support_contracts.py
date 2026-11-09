@@ -1,8 +1,10 @@
 import pytest
-from sqlalchemy import create_engine, text
 
 from zags.defense.api_steps import check_person, client_payload, created_id
-from zags.defense.db import Database
+
+sqlalchemy = pytest.importorskip("sqlalchemy")
+create_engine, text = sqlalchemy.create_engine, sqlalchemy.text
+Database = pytest.importorskip("zags.defense.db").Database
 
 
 def test_payloads_are_unique():
