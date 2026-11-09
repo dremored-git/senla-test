@@ -35,5 +35,3 @@ def existing_application_id(api_client):
     if not rows:
         pytest.skip("No application exists on the stand; this read-only fixture creates none")
     return rows[0]["applicationid"]
-
-

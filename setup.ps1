@@ -5,6 +5,18 @@ try {
         py -3 -m venv .venv
         if ($LASTEXITCODE -ne 0) { throw 'Install Python 3.11+ and its py launcher first.' }
     }
+    if ($env:OS -eq 'Windows_NT') {
+        # Pure Python avoids optional SQLAlchemy DLLs blocked by Windows policy.
+        $previousCext = $env:DISABLE_SQLALCHEMY_CEXT
+        try {
+            $env:DISABLE_SQLALCHEMY_CEXT = '1'
+            & ./.venv/Scripts/python.exe -m pip install --force-reinstall --no-deps `
+                --no-binary=SQLAlchemy --no-cache-dir 'SQLAlchemy>=2,<3'
+            if ($LASTEXITCODE -ne 0) { throw 'SQLAlchemy installation failed.' }
+        } finally {
+            $env:DISABLE_SQLALCHEMY_CEXT = $previousCext
+        }
+    }
     & ./.venv/Scripts/python.exe -m pip install -e '.[dev,defense]'
     if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed.' }
     & ./.venv/Scripts/python.exe -m playwright install chromium

@@ -2,9 +2,10 @@ from uuid import uuid4
 
 import allure
 import pytest
-from playwright.sync_api import expect
 
-from zags.defense.playwright_steps import (
+expect = pytest.importorskip("playwright.sync_api").expect
+
+from zags.defense.playwright_steps import (  # noqa: E402 - optional dependency checked above
     choose_service,
     fill_applicant,
     fill_citizen,
