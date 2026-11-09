@@ -171,9 +171,12 @@ def test_transitions_return_ready_pages_with_same_driver_and_timeout(cls, step, 
     assert driver.find_element.call_args == call(*target)
 
 
-@pytest.mark.parametrize("filename,birth", [("test_checkappreg.py", True), ("test_user.py", False)])
+@pytest.mark.parametrize("filename,birth", [
+    ("roman/test_registration_birth.py", True),
+    ("daniil/test_registration_wedding.py", False),
+])
 def test_registration_flows_use_actual_interfaces_and_safe_synthetic_data(filename, birth):
-    module = runpy.run_path(str(Path(__file__).parents[1] / "ui" / filename))
+    module = runpy.run_path(str(Path(__file__).parents[1] / filename))
     assert {mark.name for mark in module["pytestmark"]} == {"ui", "defense_write"}
     home, applicant = page_mock(HomePage), page_mock(UserPage)
     home.open_user.return_value = applicant

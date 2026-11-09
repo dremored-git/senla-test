@@ -70,7 +70,7 @@ jobs:
       - run: pip install -e ".[dev,defense]"
       - run: playwright install chromium --with-deps
       - name: Read-only live checks
-        run: pytest tests/final/roman -m "defense_live and not defense_write and not defense_remote" --junitxml=artifacts/roman/live.xml --alluredir=artifacts/roman/live-results --clean-alluredir
+        run: pytest tests/roman -m "defense_live and not defense_write and not defense_remote" --junitxml=artifacts/roman/live.xml --alluredir=artifacts/roman/live-results --clean-alluredir
       - name: Generate live HTML report
         if: always() && hashFiles('artifacts/roman/live-results/*') != ''
         run: |

@@ -71,8 +71,7 @@ jobs:
       - run: playwright install chromium --with-deps
       - name: Read-only live checks
         run: >-
-          pytest tests/api/test_api_daniil.py tests/api/test_database_daniil.py
-          tests/ui/test_playwright_daniil.py
+          pytest tests/daniil
           -m "defense_live and not defense_write and not defense_remote"
           --junitxml=artifacts/daniil/live.xml
           --alluredir=artifacts/daniil/live-results --clean-alluredir

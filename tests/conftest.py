@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 from zags.settings import Settings
 
+pytest_plugins = ["zags.fixtures.api", "zags.fixtures.browser"]
+
 
 def pytest_addoption(parser):
     parser.addoption(
